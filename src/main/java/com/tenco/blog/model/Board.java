@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Data
+
+// @Table : 실제 데이터베이스 테이블 명을 지정할 때 사용
 @Table(name = "board_tb") // 데이터베이스에서 테이블 이름을 지정해줌(찾음)
+// @Entity : JPA 가 이 클래스를 데이터베이스 테이블과 맵핑하는 객체(엔티티)로 인식
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
