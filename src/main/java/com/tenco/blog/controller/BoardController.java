@@ -1,18 +1,54 @@
 package com.tenco.blog.controller;
 
+import com.tenco.blog.model.Board;
+import com.tenco.blog.repository.BoardNativeRepository;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class BoardController {
 
+    private BoardNativeRepository boardNativeRepository;
+
+    public BoardController(BoardNativeRepository boardNativeRepository){
+        this.boardNativeRepository = boardNativeRepository;
+    }
+
+    @PostMapping("/board/save")
+    public String save(
+            @RequestParam(name = "username") String username ,
+            @RequestParam(name = "content") String content ,
+            @RequestParam(name = "title") String title) {
+        // username, title, content <--- DTO 받는 방법 , 기본 데이터 타입 설정
+//        System.out.println(board.getTitle());
+//        System.out.println(board.getUsername());
+//        System.out.println(board.getContent());
+        System.out.println(username);
+        System.out.println(content);
+        System.out.println(title);
+        boardNativeRepository.save(title,content,username);
+
+        return "redirect:/";
+    }
+
     @GetMapping({"/","/index"})
-    public String index(){
+    public String index(HttpServletRequest httpServletRequest){
         // prefix: /templates/
         // return : index
         // suffix : .mustache
         // # 기본경로 : src/main/resource/templates/index.mustache
+        List<Board> boardList = boardNativeRepository.findAll();
+
+        httpServletRequest.setAttribute("boardList",boardList);
         return "index";
     }
 
